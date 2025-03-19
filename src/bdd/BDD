@@ -1,0 +1,148 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:8889
+-- Generation Time: Mar 19, 2025 at 10:46 AM
+-- Server version: 5.7.26
+-- PHP Version: 7.4.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `ProVol`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `avion`
+--
+
+CREATE TABLE `avion` (
+  `id_avion` int(11) NOT NULL,
+  `model` varchar(50) NOT NULL,
+  `place` int(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reservation`
+--
+
+CREATE TABLE `reservation` (
+  `id_reservation` int(11) NOT NULL,
+  `date_reservation` date NOT NULL,
+  `ref_user` int(11) NOT NULL,
+  `ref_vol` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id_user` int(11) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `prenom` varchar(50) NOT NULL,
+  `date_naissance` date NOT NULL,
+  `ville_habitation` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `mdp` varchar(50) NOT NULL,
+  `role` int(4) NOT NULL,
+  `token` int(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vol`
+--
+
+CREATE TABLE `vol` (
+  `id_vol` int(11) NOT NULL,
+  `destination` int(11) NOT NULL,
+  `h_depart` time NOT NULL,
+  `h_arriver` time NOT NULL,
+  `ref_avion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `avion`
+--
+ALTER TABLE `avion`
+  ADD PRIMARY KEY (`id_avion`);
+
+--
+-- Indexes for table `reservation`
+--
+ALTER TABLE `reservation`
+  ADD PRIMARY KEY (`id_reservation`),
+  ADD KEY `fk_ref_user` (`ref_user`),
+  ADD KEY `fk_ref_vol` (`ref_vol`) USING BTREE;
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id_user`);
+
+--
+-- Indexes for table `vol`
+--
+ALTER TABLE `vol`
+  ADD PRIMARY KEY (`id_vol`),
+  ADD UNIQUE KEY `fk_ref_vol` (`ref_avion`) USING BTREE;
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `avion`
+--
+ALTER TABLE `avion`
+  MODIFY `id_avion` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `reservation`
+--
+ALTER TABLE `reservation`
+  MODIFY `id_reservation` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `vol`
+--
+ALTER TABLE `vol`
+  MODIFY `id_vol` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `reservation`
+--
+ALTER TABLE `reservation`
+  ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`ref_vol`) REFERENCES `vol` (`id_vol`),
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`ref_user`) REFERENCES `user` (`id_user`);
+
+--
+-- Constraints for table `vol`
+--
+ALTER TABLE `vol`
+  ADD CONSTRAINT `vol_ibfk_1` FOREIGN KEY (`ref_avion`) REFERENCES `avion` (`id_avion`);
