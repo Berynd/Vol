@@ -138,4 +138,13 @@ class User
     private $mdp;
     private $role;
     private $token;
+
+    public function getIdUser()
+    {
+        return $this->idUser;
+    }
+    public function setIdUser($idUser)
+    {
+        $this->idUser = $idUser;
+    }
 }
